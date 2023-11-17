@@ -17,6 +17,7 @@ public class MoveHandler : MonoBehaviour
     {
         if(start >= 0 && end >= 0)
         {
+            //Falta revisar si esta en la lista, y eliminar los bloqueados por las piezas
             board.makeMove(start, end);
             reset();
         }
@@ -24,7 +25,8 @@ public class MoveHandler : MonoBehaviour
 
     public  void reset()
     {
-       // Debug.Log("Reset");
+        // Debug.Log("Reset");
+        board.deGlow();
         start = -1;
         end = -1;
     }
@@ -33,6 +35,9 @@ public class MoveHandler : MonoBehaviour
     {
         if (start < 0 && end < 0)
         {
+            if (board.isFree(a)) return;
+            if (board.GetPiece(a).getTeam() != board.getTeam()) return; 
+            board.glow(MoveGenerator.possibleMoves(board.GetPiece(a)));
             start = a;
         } else if (start > end)
         {
