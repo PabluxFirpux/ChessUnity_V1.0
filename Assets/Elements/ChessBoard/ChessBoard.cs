@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChessBoard : MonoBehaviour
 {
+    public Text text;
     public MoveHandler moveHandler;
     public Tile preFabTile;
     private Tile[] tiles;
@@ -17,6 +20,7 @@ public class ChessBoard : MonoBehaviour
         makeBoard();
         putStartPieces();
         currentTeam = Piece.Team.WHITE;
+        changeText();
     }
 
     // Update is called once per frame
@@ -118,6 +122,7 @@ public class ChessBoard : MonoBehaviour
        if (pieces[startPos] == null) return;
        if (pieces[startPos].getTeam() != currentTeam) return;
        if (pieces[endpos] != null && pieces[endpos].getTeam() == currentTeam) return;
+        if (pieces[endpos].getType().Equals(Piece.TypeOfPiece.KING)) gameOver(currentTeam);
 
         if(!isFree(endpos)) pieces[endpos].destroy();
         pieces[endpos] = pieces[startPos];
@@ -128,14 +133,38 @@ public class ChessBoard : MonoBehaviour
         changeTurns();
     }
 
+    void gameOver(Piece.Team team) 
+    {
+        //Implement scene changes
+    }
+
     void changeTurns()
     {
         if(currentTeam == Piece.Team.WHITE)
         {
             currentTeam = Piece.Team.BLACK;
+            changeText();
         } else
         {
             currentTeam = Piece.Team.WHITE;
+            changeText();
+        }
+    }
+
+    void changeText()
+    {
+        String displayMessage = "Turn: ";
+        switch(currentTeam)
+        {
+            case Piece.Team.BLACK:
+                text.text = displayMessage + "Black";
+                break;
+            case Piece.Team.WHITE:
+                text.text = displayMessage + "White";
+                break;
+            default:
+                text.text = displayMessage+ "White";
+                break;
         }
     }
 

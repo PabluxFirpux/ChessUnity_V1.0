@@ -102,6 +102,11 @@ public class Piece : MonoBehaviour
         return this.pieceType;
     }
 
+    public void setType(TypeOfPiece type)
+    {
+        this.pieceType = type;
+    }
+
     public void destroy()
     {
         Destroy(gameObject);

@@ -18,7 +18,11 @@ public class MoveHandler : MonoBehaviour
         if(start >= 0 && end >= 0)
         {
             //Falta revisar si esta en la lista, y eliminar los bloqueados por las piezas
-            board.makeMove(start, end);
+            List<int> possibleMoves = MoveGenerator.possibleMoves(board.GetPiece(start), board);
+            foreach(int move in possibleMoves)
+            {
+                if (move == end) board.makeMove(start, end);
+            }
             reset();
         }
     }
@@ -37,7 +41,7 @@ public class MoveHandler : MonoBehaviour
         {
             if (board.isFree(a)) return;
             if (board.GetPiece(a).getTeam() != board.getTeam()) return; 
-            board.glow(MoveGenerator.possibleMoves(board.GetPiece(a)));
+            board.glow(MoveGenerator.possibleMoves(board.GetPiece(a), board));
             start = a;
         } else if (start > end)
         {
